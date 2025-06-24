@@ -8,7 +8,12 @@
     --color-orchid: #D391B0;
     --color-mauve: #BA6E8F;
 
-    --font-primary: 'Segoe UI', sans-serif;
+    /* --font-primary: 'Segoe UI', sans-serif; */
+}
+
+.navbar-artora {
+    background-color:#5D3C64;
+    color: white;
 }
 
 body {
@@ -36,4 +41,18 @@ button {
 
 button:hover {
     background-color: var(--color-mauve);
+}
+
+.text-orchid {
+    color: #D391B0;
+}
+
+.text-dusty-rose {
+    color: #9F6496;
+}
+
+.logo-text {
+    color: #9F6496;
+    font-family: 'Great Vibes', cursive;
+    font-size: 5rem;
 }
