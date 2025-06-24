@@ -1,0 +1,58 @@
+/* src/theme.css */
+
+:root {
+    --color-dark: #0C0420;
+    --color-mauve-deep: #5D3C64;
+    --color-purple-plum: #7B466A;
+    --color-dusty-rose: #9F6496;
+    --color-orchid: #D391B0;
+    --color-mauve: #BA6E8F;
+
+    /* --font-primary: 'Segoe UI', sans-serif; */
+}
+
+.navbar-artora {
+    background-color:#5D3C64;
+    color: white;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-primary);
+    background-color: var(--color-dark);
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-orchid);
+}
+
+button {
+    background-color: var(--color-purple-plum);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--color-mauve);
+}
+
+.text-orchid {
+    color: #D391B0;
+}
+
+.text-dusty-rose {
+    color: #9F6496;
+}
+
+.logo-text {
+    color: #9F6496;
+    font-family: 'Great Vibes', cursive;
+    font-size: 5rem;
+}
