@@ -1,32 +1,64 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from 'axios';  
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [msg, setMsg] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setForm({...form, [e.target.name]: e.target.value});
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', form);
-      alert("Logged in as " + res.data.user.name);
-      localStorage.setItem("token", res.data.token);
+      const { token, user } = res.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      
+      // Redirect to dashboard based on role
+      if (user.role === "admin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/user-dashboard");
+      }
+      setMsg(`Logged in as ${user.name} (${user.role})`);
+
     } catch (err) {
-      alert(err.response?.data?.msg || "Login failed");
+      setMsg(err.response?.data?.msg || "Login failed");
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="container py-5" style={{ maxWidth: "400px", margin: "auto" }}>
+      <h2 className="text-center text-orchid mb-4">Login to Artora</h2>
       <form onSubmit={handleSubmit}>
-        <input name="email" type="email" placeholder="Email" onChange={handleChange} />
-        <input name="password" type="password" placeholder="Password" onChange={handleChange} />
-        <button type="submit">Login</button>
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          onChange={handleChange}
+          required
+          className="form-control my-2"
+          style={{ backgroundColor: '#2d1c3b', color: 'white', border: 'none' }}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          onChange={handleChange}
+          required
+          className="form-control my-2"
+          style={{ backgroundColor: '#2d1c3b', color: 'white', border: 'none' }}
+        />
+        <button type="submit" className="w-100">Login</button>
       </form>
+      {msg && <p className="mt-3 text-center text-dusty-rose">{msg}</p>}
     </div>
   );
 }

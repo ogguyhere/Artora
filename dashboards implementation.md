@@ -17,3 +17,27 @@ Frontend checks:
     “Is user logged in?”
     “Is user admin?”
 
+# Backend (Node.js + Express + MongoDB)
+    bcryptjs — to hash passwords
+    jsonwebtoken — to create and verify tokens
+    User model with a role field (user, admin, etc.)
+    Middleware to protect routes
+
+# Frontend (React)
+    Login form
+    Axios to send requests
+    Store token in localStorage
+    Conditional rendering based on role
+    Protected routes using React Router
+
+
+
+[React Login Form] → (POST /api/login) → [Node.js Auth]
+                                           ↓
+                                  Create JWT with role
+                                           ↓
+                            ← (token) ← Send JWT to React
+                                           ↓
+                  React saves it & shows dashboard based on role
+
+

@@ -4,6 +4,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import './css/theme.css';
+import AdminDashboard from './pages/Admin-Dashboard';
+// import UserDashboard from './pages/UserDashboard';
+import PrivateRoute from './components/Private-Route';
 
 function App() {
   return (
@@ -59,7 +62,15 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        {/* Protected Routes */}
+        <Route path="/admin-dashboard" element={
+          <PrivateRoute role="admin">
+            <AdminDashboard />
+          </PrivateRoute>
+        } />
       </Routes>
+
+
     </Router>
   );
 }
