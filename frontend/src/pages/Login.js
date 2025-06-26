@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import axios from 'axios';  
+import React, { useState , useContext} from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/Auth-Context';
 
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -20,19 +22,19 @@ function Login() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      
-      // Redirect to dashboard based on role
+      login(user); // 👈 this is the missing piece!
+
       if (user.role === "admin") {
         navigate("/admin-dashboard");
       } else {
         navigate("/user-dashboard");
       }
       setMsg(`Logged in as ${user.name} (${user.role})`);
-
     } catch (err) {
       setMsg(err.response?.data?.msg || "Login failed");
     }
   };
+
 
   return (
     <div className="container py-5" style={{ maxWidth: "400px", margin: "auto" }}>

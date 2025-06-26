@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import './css/theme.css';
 import AdminDashboard from './pages/Admin-Dashboard';
-// import UserDashboard from './pages/UserDashboard';
+import UserDashboard from './pages/User-Dashboard';
 import PrivateRoute from './components/Private-Route';
+import { useContext } from 'react';
+import { AuthContext } from './context/Auth-Context';
+
 
 function App() {
+  // const [user, setUser] = useState(null);
+  const { user, logout } = useContext(AuthContext);
+
+
+  // useEffect(() => {
+  //   const stored = localStorage.getItem("user");
+  //   if (stored) setUser(JSON.parse(stored));
+  // }, []);
+  const handleLogout = () => {
+    logout();                     // logout from context
+    window.location.href = "/login";  // optional: redirect
+  };
+  
   return (
     <Router>
       <nav className="navbar navbar-expand-lg navbar-artora">
@@ -22,12 +38,35 @@ function App() {
               <li className="nav-item">
                 <Link className="nav-link active" to="/">Home</Link>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link className="nav-link" to="/register">Register</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/login">Login</Link>
-              </li>
+              </li> */}
+              {user ? (
+                <>
+                  <li className="nav-item">
+                    <span className="nav-link">Hi, {user.name}</span>
+                  </li>
+                  <li className="nav-item">
+                    <button className="nav-link btn btn-link text-white" onClick={logout} style={{ textDecoration: 'none' }}>
+                      Logout
+                    </button>
+
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/register">Register</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/login">Login</Link>
+                  </li>
+                </>
+              )}
+
               <li className="nav-item dropdown">
                 <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
                   Dropdown
@@ -66,6 +105,11 @@ function App() {
         <Route path="/admin-dashboard" element={
           <PrivateRoute role="admin">
             <AdminDashboard />
+          </PrivateRoute>
+        } />
+        <Route path="/user-dashboard" element={
+          <PrivateRoute role="buyer">
+            <UserDashboard />
           </PrivateRoute>
         } />
       </Routes>
