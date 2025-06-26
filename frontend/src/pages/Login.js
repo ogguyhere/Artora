@@ -26,7 +26,12 @@ function Login() {
 
       if (user.role === "admin") {
         navigate("/admin-dashboard");
-      } else {
+      }
+      else if (user.role === "artist")
+      {
+        navigate("/artist-dashboard");
+      }
+      else {
         navigate("/user-dashboard");
       }
       setMsg(`Logged in as ${user.name} (${user.role})`);

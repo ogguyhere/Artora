@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import './css/theme.css';
 import AdminDashboard from './pages/Admin-Dashboard';
 import UserDashboard from './pages/User-Dashboard';
+import ArtistDashboard from './pages/Artist-Dashboard';
 import PrivateRoute from './components/Private-Route';
 import { useContext } from 'react';
 import { AuthContext } from './context/Auth-Context';
@@ -110,6 +111,11 @@ function App() {
         <Route path="/user-dashboard" element={
           <PrivateRoute role="buyer">
             <UserDashboard />
+          </PrivateRoute>
+        } />
+        <Route path='/artist-dashboard' element = {
+          <PrivateRoute role = 'artist'>
+            <ArtistDashboard/>
           </PrivateRoute>
         } />
       </Routes>
