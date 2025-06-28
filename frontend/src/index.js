@@ -8,12 +8,15 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
 import { AuthProvider } from './context/Auth-Context';
+import { CartProvider } from './context/Cart-Context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </AuthProvider>
   </React.StrictMode>
 );

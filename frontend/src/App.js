@@ -13,7 +13,8 @@ import { AuthContext } from './context/Auth-Context';
 import './index.css'; // Make sure this is BELOW bootstrap if both are used
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Shop from './pages/Shop'; 
+import Shop from './pages/Shop';
+import Cart from './pages/Cart';
 
 function App() {
   // const [user, setUser] = useState(null);
@@ -54,11 +55,23 @@ function App() {
                   <li className="nav-item">
                     <span className="nav-link">Hi, {user.name}</span>
                   </li>
+
+                  <li className="nav-item">
+                    {user.role === 'admin' && (
+                      <Link className="nav-link" to="/admin-dashboard">Dashboard</Link>
+                    )}
+                    {user.role === 'artist' && (
+                      <Link className="nav-link" to="/artist-dashboard">Dashboard</Link>
+                    )}
+                    {user.role === 'buyer' && (
+                      <Link className="nav-link" to="/user-dashboard">Dashboard</Link>
+                    )}
+                  </li>
+
                   <li className="nav-item">
                     <button className="nav-link btn btn-link text-white" onClick={logout} style={{ textDecoration: 'none' }}>
                       Logout
                     </button>
-
                   </li>
                 </>
               ) : (
@@ -71,6 +84,10 @@ function App() {
                   </li>
                 </>
               )}
+              <li className="nav-item">
+                <Link className="nav-link" to="/cart">Cart</Link>
+              </li>
+
 
               <li className="nav-item dropdown">
                 <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
@@ -107,6 +124,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/cart" element={<Cart />} />
         {/* Protected Routes */}
         <Route path="/admin-dashboard" element={
           <PrivateRoute role="admin">

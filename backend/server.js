@@ -18,6 +18,7 @@ const uploadsDir = path.join(__dirname, "uploads");
 
 app.use("/uploads", express.static(uploadsDir));
 app.use("/api/artworks", require("./routes/artwork-routes"));
+app.use("/api/cart", require("./routes/cart-routes"));
 
 //DB Connection
 mongoose.connect(process.env.MONGO_URI)

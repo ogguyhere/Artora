@@ -1,10 +1,38 @@
 // src/pages/Shop.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useContext } from 'react';
+import { CartContext } from '../context/Cart-Context';
+import { AuthContext } from '../context/Auth-Context'; // for logged-in user ID
+
 
 function Shop() {
     const [artworks, setArtworks] = useState([]);
     const [filter, setFilter] = useState('');
+    const { addToCart } = useContext(CartContext);
+    const { user } = useContext(AuthContext);
+    console.log("Current user from AuthContext:", user);
+
+    const handleAddToCart = (artwork) => {
+        if (!user) {
+            alert("Please login to add to cart.");
+            return;
+        }
+
+        axios.post('http://localhost:5000/api/cart/add', {
+            userId: user.id,
+            artworkId: artwork._id
+            
+        })
+            .then(() => {
+                addToCart(artwork); // Optional: update local state
+                alert("Added to cart!");
+            })
+            .catch(err => {
+                console.error("Error adding to cart:", err);
+                alert("Failed to add to cart.");
+            });
+    };
 
     useEffect(() => {
         axios.get("http://localhost:5000/api/artworks")
@@ -48,6 +76,13 @@ function Shop() {
                                 </span>
                                 <br />
                                 <button className="btn btn-outline-light btn-sm mt-3">View Details</button>
+                                <button
+                                    className="btn btn-success btn-sm mt-2"
+                                    onClick={() => handleAddToCart(art)}
+                                >
+                                    Add to Cart
+                                </button>
+
                             </div>
                         </div>
                     </div>
