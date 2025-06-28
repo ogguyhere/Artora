@@ -10,13 +10,17 @@ import ArtistDashboard from './pages/Artist-Dashboard';
 import PrivateRoute from './components/Private-Route';
 import { useContext } from 'react';
 import { AuthContext } from './context/Auth-Context';
-
+import './index.css'; // Make sure this is BELOW bootstrap if both are used
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import Shop from './pages/Shop'; 
 
 function App() {
   // const [user, setUser] = useState(null);
   const { user, logout } = useContext(AuthContext);
-
-
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
   // useEffect(() => {
   //   const stored = localStorage.getItem("user");
   //   if (stored) setUser(JSON.parse(stored));
@@ -25,7 +29,7 @@ function App() {
     logout();                     // logout from context
     window.location.href = "/login";  // optional: redirect
   };
-  
+
   return (
     <Router>
       <nav className="navbar navbar-expand-lg navbar-artora">
@@ -102,6 +106,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/shop" element={<Shop />} />
         {/* Protected Routes */}
         <Route path="/admin-dashboard" element={
           <PrivateRoute role="admin">
@@ -113,9 +118,9 @@ function App() {
             <UserDashboard />
           </PrivateRoute>
         } />
-        <Route path='/artist-dashboard' element = {
-          <PrivateRoute role = 'artist'>
-            <ArtistDashboard/>
+        <Route path='/artist-dashboard' element={
+          <PrivateRoute role='artist'>
+            <ArtistDashboard />
           </PrivateRoute>
         } />
       </Routes>

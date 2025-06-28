@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require("path");
 
 dotenv.config();
 
@@ -12,6 +13,10 @@ app.use(express.json());
 //Routes 
 app.use("/api/auth", require("./routes/auth-routes"));
 app.use("/api/user", require("./routes/user-routes"));  
+const fs = require("fs");
+const uploadsDir = path.join(__dirname, "uploads");
+
+app.use("/uploads", express.static(uploadsDir));
 app.use("/api/artworks", require("./routes/artwork-routes"));
 
 //DB Connection

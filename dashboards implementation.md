@@ -41,3 +41,7 @@ Frontend checks:
                   React saves it & shows dashboard based on role
 
 
+
+
+- tailwind.css
+- aos - animate on scroll 

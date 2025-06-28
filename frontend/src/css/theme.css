@@ -42,7 +42,12 @@ button {
 button:hover {
     background-color: var(--color-mauve);
 }
-
+/* Add in theme.css */
+.btn-glow:hover {
+    box-shadow: 0 0 10px var(--color-orchid);
+     
+  }
+  
 .text-orchid {
     color: #D391B0;
 }

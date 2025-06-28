@@ -1,5 +1,5 @@
 // src/pages/Home.js
-import React from 'react'; 
+import React from 'react';
 
 // function Home() {
 //   return (
@@ -25,13 +25,17 @@ function Home() {
             <p className="text-center lead">Where passion meets creativity.</p>
 
             <div className="text-center">
-                <h1 className="display-4 text-orchid">Welcome to <span className="fw-bold">Artora</span></h1>
-                <p className="lead text-dusty-rose">
-                    Discover, collect, and showcase the best digital artworks from artists around the world.
+                <h1 className="display-4 text-orchid" data-aos="fade-up">Welcome to Artora</h1>
+                <p className="lead text-dusty-rose" data-aos="fade-in" data-aos-delay="300">
+                    Discover, collect, and showcase...
                 </p>
+
                 <div className="mt-4">
-                    <button className="btn btn-outline-light me-2">Explore Gallery</button>
-                    <button className="btn btn-secondary">Join Now</button>
+                    <button className="btn btn-glow me-2">Explore</button>
+
+                    <button className="btn btn-secondary transition hover:bg-mauve hover:scale-105 duration-300">
+                        Join Now
+                    </button>
                 </div>
             </div>
 
