@@ -32,16 +32,16 @@ function Shop() {
       userId: user.id,
       artworkId: artwork._id
     })
-    .then(() => {
-      addToCart(artwork);
-      alert("Added to cart!");
-      setAddingToCart(null);
-    })
-    .catch(err => {
-      console.error("Error adding to cart:", err);
-      alert("Failed to add to cart.");
-      setAddingToCart(null);
-    });
+      .then(() => {
+        addToCart(artwork);
+        alert("Added to cart!");
+        setAddingToCart(null);
+      })
+      .catch(err => {
+        console.error("Error adding to cart:", err);
+        alert("Failed to add to cart.");
+        setAddingToCart(null);
+      });
   };
 
   useEffect(() => {
@@ -141,7 +141,7 @@ function Shop() {
         {filtered.length > 0 ? (
           <div className={`row ${viewMode === 'list' ? 'list-view' : ''}`}>
             {filtered.map((art, index) => (
-              <div 
+              <div
                 className={`${viewMode === 'grid' ? 'col-lg-4 col-md-6' : 'col-12'} mb-4`}
                 key={art._id}
                 data-aos="fade-up"
@@ -159,21 +159,6 @@ function Shop() {
                         <button className="btn btn-outline btn-sm mb-2">
                           👁️ View Details
                         </button>
-                        <button
-                          className={`btn btn-glow btn-sm ${art.status === 'sold' ? 'btn-disabled' : ''}`}
-                          onClick={() => handleAddToCart(art)}
-                          disabled={art.status === 'sold' || addingToCart === art._id}
-                        >
-                          {addingToCart === art._id ? (
-                            <div className="spinner-border spinner-border-sm me-2" role="status">
-                              <span className="visually-hidden">Loading...</span>
-                            </div>
-                          ) : art.status === 'sold' ? (
-                            "🚫 Sold"
-                          ) : (
-                            "🛒 Add to Cart"
-                          )}
-                        </button>
                       </div>
                     </div>
                     <div className="status-badge">
@@ -182,10 +167,34 @@ function Shop() {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="card-content">
                     <h5 className="artwork-title text-orchid mb-2">{art.title}</h5>
+                    <p className="artist-name" style={{ marginBottom: '8px', fontSize: '0.9rem', color: 'white' }}>
+                      By: {art.artist?.name || 'Unknown Artist'}
+                    </p>
+
                     <p className="artwork-description text-dusty-rose">{art.description}</p>
+                    
+                    {/* Add to Cart Button - Always Visible */}
+                    <div className="add-to-cart-section mb-3">
+                      <button
+                        className={`btn btn-glow w-100 ${art.status === 'sold' ? 'btn-disabled' : ''}`}
+                        onClick={() => handleAddToCart(art)}
+                        disabled={art.status === 'sold' || addingToCart === art._id}
+                      >
+                        {addingToCart === art._id ? (
+                          <div className="spinner-border spinner-border-sm me-2" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                        ) : art.status === 'sold' ? (
+                          "🚫 Sold Out"
+                        ) : (
+                          "🛒 Add to Cart"
+                        )}
+                      </button>
+                    </div>
+
                     <div className="artwork-footer">
                       <div className="price-section">
                         <span className="price-label">Price</span>
@@ -213,7 +222,7 @@ function Shop() {
               </div>
               <h3 className="text-orchid mb-3">No Artworks Found</h3>
               <p className="text-dusty-rose">Try adjusting your search or browse our full collection.</p>
-              <button 
+              <button
                 className="btn btn-outline mt-3"
                 onClick={() => setFilter('')}
               >
@@ -424,10 +433,10 @@ function Shop() {
           color: white;
         }
 
-        .artwork-title {
-          font-family: var(--font-display);
-          font-size: 1.3rem;
-          margin-bottom: 0.5rem;
+        .artist-name {
+          color: white !important;
+          font-weight: 500;
+          opacity: 0.9;
         }
 
         .artwork-description {
@@ -435,6 +444,18 @@ function Shop() {
           line-height: 1.5;
           margin-bottom: 1rem;
           opacity: 0.9;
+        }
+
+        .add-to-cart-section {
+          margin-top: auto;
+          margin-bottom: 1rem;
+        }
+
+        .add-to-cart-section .btn {
+          padding: 12px 20px;
+          font-weight: 600;
+          border-radius: var(--border-radius);
+          transition: all 0.3s ease;
         }
 
         .artwork-footer {
