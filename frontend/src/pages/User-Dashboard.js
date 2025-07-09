@@ -1,10 +1,10 @@
 // UserDashboard.js — Integrated Dashboard
 import React, { useState } from "react";
 import Cart from "./Cart";
-// import Orders from "../components/Orders";
-// import Wishlist from "../components/Wishlist";
-// import Profile from "../components/Profile";
-// import Settings from "../components/Settings";
+import Orders from "./Orders";
+import Wishlist from "./Wishlist";
+import Profile from "./Profile";
+import Settings from "./Settings";
 
 function UserDashboard() {
   const [selectedTab, setSelectedTab] = useState("dashboard");

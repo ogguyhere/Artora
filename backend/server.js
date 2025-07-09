@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
 const adminRoutes = require('./routes/admin-routes');
-
+const wishlistRoutes = require('./routes/wishlist-routes');
 dotenv.config();
 
 const app = express();
@@ -21,6 +21,8 @@ app.use("/uploads", express.static(uploadsDir));
 app.use("/api/artworks", require("./routes/artwork-routes"));
 app.use("/api/cart", require("./routes/cart-routes"));
 app.use('/api/admin', adminRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+
 //DB Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB Connected"))

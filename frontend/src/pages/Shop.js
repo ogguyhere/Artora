@@ -15,6 +15,26 @@ function Shop() {
   const { user } = useContext(AuthContext);
 
   console.log("Current user from AuthContext:", user);
+  const handleAddToWishlist = (artworkId) => {
+    if (!user) {
+      alert("Please login to add to wishlist.");
+      return;
+    }
+
+    axios.post('http://localhost:5000/api/wishlist/add', {
+      artworkId
+    }, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+
+    })
+      .then(() => {
+        alert("Added to wishlist!");
+      })
+      .catch(err => {
+        console.error("Error adding to wishlist:", err);
+        alert("Failed to add to wishlist.");
+      });
+  };
 
   const handleAddToCart = (artwork) => {
     if (!user) {
@@ -175,7 +195,7 @@ function Shop() {
                     </p>
 
                     <p className="artwork-description text-dusty-rose">{art.description}</p>
-                    
+
                     {/* Add to Cart Button - Always Visible */}
                     <div className="add-to-cart-section mb-3">
                       <button
@@ -201,9 +221,14 @@ function Shop() {
                         <span className="price-value">Rs {art.price.toLocaleString()}</span>
                       </div>
                       <div className="artwork-actions">
-                        <button className="action-btn" title="Add to Favorites">
+                        <button
+                          className="action-btn"
+                          title="Add to Favorites"
+                          onClick={() => handleAddToWishlist(art._id)}
+                        >
                           💜
                         </button>
+
                         <button className="action-btn" title="Share">
                           📤
                         </button>
