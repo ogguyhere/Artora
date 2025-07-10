@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'buyer' });
+  const [profileImage, setProfileImage] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -18,27 +20,72 @@ function Register() {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!form.name.trim()) newErrors.name = 'Name is required';
     if (!form.email.trim()) newErrors.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = 'Email is invalid';
     if (!form.password) newErrors.password = 'Password is required';
     else if (form.password.length < 6) newErrors.password = 'Password must be at least 6 characters';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!validateForm()) return;
+
+  //   setLoading(true);
+  //   try {
+  //     const res = await axios.post('http://localhost:5000/api/auth/register', form);
+
+  //     // Success notification
+  //     const notification = document.createElement('div');
+  //     notification.className = 'success-notification';
+  //     notification.innerHTML = `
+  //       <div class="notification-content">
+  //         <span class="notification-icon">✨</span>
+  //         <span>Welcome to Artora! ${res.data.msg}</span>
+  //       </div>
+  //     `;
+  //     document.body.appendChild(notification);
+
+  //     setTimeout(() => {
+  //       notification.remove();
+  //       navigate('/login');
+  //     }, 2000);
+
+  //   } catch (err) {
+  //     const errorMsg = err.response?.data?.msg || "Registration failed";
+  //     setErrors({ general: errorMsg });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', form);
-      
-      // Success notification
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("password", form.password);
+      formData.append("role", form.role);
+      if (profileImage) {
+        formData.append("profilePicture", profileImage);
+      }
+
+      const res = await axios.post('http://localhost:5000/api/auth/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      // Notification as before
       const notification = document.createElement('div');
       notification.className = 'success-notification';
       notification.innerHTML = `
@@ -48,12 +95,12 @@ function Register() {
         </div>
       `;
       document.body.appendChild(notification);
-      
+
       setTimeout(() => {
         notification.remove();
         navigate('/login');
       }, 2000);
-      
+
     } catch (err) {
       const errorMsg = err.response?.data?.msg || "Registration failed";
       setErrors({ general: errorMsg });
@@ -175,6 +222,16 @@ function Register() {
                     ))}
                   </div>
                 </div>
+                <div className="form-group mb-4">
+                  <label className="form-label text-orchid">Profile Picture</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="form-control"
+                    onChange={(e) => setProfileImage(e.target.files[0])}
+                  />
+                </div>
+
 
                 {/* Submit Button */}
                 <button

@@ -3,24 +3,36 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-exports.register = async (req, res) =>
-{
-    const { name, email, password, role } = req.body;
-    try{
-        const existing = await User.findOne({ email });
-        if (existing) return res.status(400).json({msg: "User alr exists"});
+const register = async (req, res) => {
+  const { name, email, password, role } = req.body;
+  try {
+    if (!name || !email || !password) {
+      return res.status(400).json({ msg: "All fields are required" });
+    }
 
-        const hash = await bcrypt.hash(password,10);
-        const newUser = new User({name, email, password: hash, role});
-        await newUser.save();
-        res.status(201).json({msg:"User created"});
-    }
-    catch(err){
-        res.status(500).json({msg: err.message});
-    }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ msg: "Email already in use" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      profilePicture: req.file ? `/uploads/profile/${req.file.filename}` : undefined
+    });
+
+    await newUser.save();
+    res.status(201).json({ msg: "Registered successfully!" });
+  } catch (err) {
+    console.error("Register error:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
 };
 
-exports.login = async (req, res) => {
+
+const login = async (req, res) => {
     const { email, password } = req.body;
     try {
       const user = await User.findOne({ email });
@@ -33,8 +45,10 @@ exports.login = async (req, res) => {
         expiresIn: "1d",
       });
   
-      res.json({ token, user: { id: user._id, name: user.name, role: user.role } });
+      res.json({ token, user: { id: user._id, name: user.name, role: user.role, email:user.email, profilePicture:user.profilePicture } });
     } catch (err) {
       res.status(500).json({ msg: err.message });
     }
 };
+
+module.exports = { register, login };

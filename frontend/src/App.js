@@ -52,7 +52,15 @@ function App() {
               </li> */}
               {user ? (
                 <>
-                  <li className="nav-item">
+                  <li className="nav-item d-flex align-items-center">
+                    {user?.profilePicture && (
+                      <img
+                        src={`http://localhost:5000${user.profilePicture}`}
+                        alt="Profile"
+                        className="rounded-circle me-2"
+                        style={{ width: "35px", height: "35px", objectFit: "cover" }}
+                      />
+                    )}
                     <span className="nav-link">Hi, {user.name}</span>
                   </li>
 
@@ -110,6 +118,7 @@ function App() {
             </form>
           </div>
         </div>
+        
       </nav>
 
       {/* Optional custom second navbar
