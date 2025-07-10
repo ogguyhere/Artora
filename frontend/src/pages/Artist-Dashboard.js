@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import '../css/artist_dashboard.css';
+import Profile from "./Profile";
 
 function ArtistDashboard() {
   const [form, setForm] = useState({
@@ -10,6 +11,7 @@ function ArtistDashboard() {
     price: "",
     publishingstatus: "published",
   });
+  const [selectedTab, setSelectedTab] = useState("dashboard");
   const [artworks, setArtworks] = useState([]);
   const [msg, setMsg] = useState("");
   const [editId, setEditId] = useState(null);
@@ -21,6 +23,15 @@ function ArtistDashboard() {
     totalRevenue: 0,
     avgPrice: 0
   });
+
+  const renderContent=() =>{
+    switch(selectedTab){
+      case "profile":
+        return <Profile/>
+      default:
+        return <p>Choose an option from the sidebar.</p>;
+    }
+  };
 
   const token = localStorage.getItem("token");
 
@@ -161,6 +172,11 @@ function ArtistDashboard() {
                 onClick={() => setShowUploadForm(!showUploadForm)}
               >
                 {showUploadForm ? "📋 View Gallery" : "🎨 Create New Artwork"}
+              </button>
+              <br></br>
+              <br></br>
+              <button className = " btn btn-glow btn-lg" onClick={Profile}> Profile
+                                
               </button>
             </div>
           </div>

@@ -15,6 +15,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
+import Profile from "./pages/Profile";
 
 function App() {
   // const [user, setUser] = useState(null);
@@ -75,7 +76,12 @@ function App() {
                       <Link className="nav-link" to="/user-dashboard">Dashboard</Link>
                     )}
                   </li>
-
+                  <li className="nav-item">
+                   
+                      <Link className="nav-link" to="/profile">Profile</Link>
+                    
+                    
+                  </li>
                   <li className="nav-item">
                     <button className="nav-link btn btn-link text-white" onClick={logout} style={{ textDecoration: 'none' }}>
                       Logout
@@ -134,6 +140,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path='/profile' element={<Profile/>}/>
         {/* Protected Routes */}
         <Route path="/admin-dashboard" element={
           <PrivateRoute role="admin">
