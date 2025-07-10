@@ -120,7 +120,7 @@ function Profile() {
               <h4 className="text-orchid">Profile Picture</h4>
               <form onSubmit={uploadProfilePic}>
                 <input type="file" onChange={handleImageChange} accept="image/*" className="form-control mb-2" />
-                <button type="submit" className="btn btn-outline-primary btn-sm">Upload</button>
+                <button type="submit" className="btn btn-primary btn-sm">Upload</button>
               </form>
             </div>
           </div>
@@ -149,7 +149,7 @@ function Profile() {
                     className="form-control"
                   />
                 </div>
-                <button className="btn btn-warning btn-sm">Change Password</button>
+                <button className="btn btn-primary btn-sm">Change Password</button>
               </form>
             </div>
           </div>

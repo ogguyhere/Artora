@@ -5,6 +5,9 @@ const cors = require("cors");
 const path = require("path");
 const adminRoutes = require('./routes/admin-routes');
 const wishlistRoutes = require('./routes/wishlist-routes');
+const orderRoutes = require("./routes/order-routes");
+
+
 dotenv.config();
 
 const app = express();
@@ -22,7 +25,8 @@ app.use("/api/artworks", require("./routes/artwork-routes"));
 app.use("/api/cart", require("./routes/cart-routes"));
 app.use('/api/admin', adminRoutes);
 app.use('/api/wishlist', wishlistRoutes);
-app.use('/uploads/pro', express.static('uploads'));
+app.use("/api/orders", orderRoutes);
+// app.use('/uploads/pro', express.static('uploads'));
 //DB Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB Connected"))

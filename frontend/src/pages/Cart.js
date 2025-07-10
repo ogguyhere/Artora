@@ -14,7 +14,7 @@ function Cart() {
       setLoading(false);
       return;
     }
-    
+
     axios.get(`http://localhost:5000/api/cart/${user.id}`)
       .then(res => {
         setCart(res.data);
@@ -25,6 +25,41 @@ function Cart() {
         setLoading(false);
       });
   }, [user]);
+  const handleCheckout = async () => {
+    if (!cart) return;
+    const soldOutItem = cart.items.find(item => item.artwork.status === "sold");
+    if (soldOutItem) {
+      alert(`❌ The artwork "${soldOutItem.artwork.title}" is already sold out.`);
+      return;
+    }
+    try {
+      const items = cart.items.map(item => ({
+        productId: item.artwork._id,
+        title: item.artwork.title,
+        quantity: item.quantity,
+        price: item.artwork.price,
+        image: item.artwork.imageUrl
+      }));
+
+      const totalAmount = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+      await axios.post("http://localhost:5000/api/orders", {
+        items,
+        totalAmount
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+
+      alert("🛍️ Order placed successfully!");
+      setCart({ items: [] }); // clear cart locally, or fetch again from backend
+
+    } catch (err) {
+      console.error("Checkout error:", err);
+      alert("❌ Failed to place order.");
+    }
+  };
 
   const handleRemove = (artworkId) => {
     setRemoving(artworkId);
@@ -104,8 +139,8 @@ function Cart() {
         {/* Cart Items */}
         <div className="row">
           {cart.items.map((item, index) => (
-            <div 
-              className="col-lg-4 col-md-6 mb-4" 
+            <div
+              className="col-lg-4 col-md-6 mb-4"
               key={item.artwork._id}
               data-aos="fade-up"
               data-aos-delay={index * 100}
@@ -117,8 +152,14 @@ function Cart() {
                     className="artwork-image"
                     alt={item.artwork.title}
                   />
+                  {item.artwork.status === "sold" && (
+                    <span className="badge bg-danger position-absolute top-0 start-0 m-2">
+                      SOLD
+                    </span>
+                  )}
+
                   <div className="artwork-overlay">
-                    <button 
+                    <button
                       className="btn btn-outline btn-sm"
                       onClick={() => handleRemove(item.artwork._id)}
                       disabled={removing === item.artwork._id}
@@ -134,7 +175,7 @@ function Cart() {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="card-content">
                   <h5 className="artwork-title text-orchid mb-2">{item.artwork.title}</h5>
                   <div className="artwork-details">
@@ -172,9 +213,15 @@ function Cart() {
             </div>
             <div className="row mt-4">
               <div className="col-12 text-center">
-                <button className="btn btn-glow me-3" style={{ minWidth: '150px' }}>
+                <button
+                  className="btn btn-glow me-3"
+                  style={{ minWidth: '150px' }}
+                  onClick={handleCheckout}
+                  disabled={!cart.items.length}
+                >
                   Proceed to Checkout
                 </button>
+
                 <Link to="/shop" className="btn btn-outline">
                   Continue Shopping
                 </Link>

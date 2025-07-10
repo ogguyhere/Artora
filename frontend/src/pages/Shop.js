@@ -213,6 +213,7 @@ function Shop() {
                           "🛒 Add to Cart"
                         )}
                       </button>
+
                     </div>
 
                     <div className="artwork-footer">
